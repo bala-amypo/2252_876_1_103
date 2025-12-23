@@ -1,15 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class GeneratedShiftSchedule {
 
     @Id
@@ -24,8 +19,13 @@ public class GeneratedShiftSchedule {
     private Employee employee;
 
     @ManyToOne
-    private Department department;
-
-    @ManyToOne
     private ShiftTemplate shiftTemplate;
+
+    public GeneratedShiftSchedule() {}
+
+    public void setShiftDate(LocalDate shiftDate) { this.shiftDate = shiftDate; }
+    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+    public void setEmployee(Employee employee) { this.employee = employee; }
+    public void setShiftTemplate(ShiftTemplate shiftTemplate) { this.shiftTemplate = shiftTemplate; }
 }

@@ -1,14 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalTime;
+import java.util.Set;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ShiftTemplate {
 
     @Id
@@ -18,8 +14,24 @@ public class ShiftTemplate {
     private String templateName;
     private LocalTime startTime;
     private LocalTime endTime;
-    private String requiredSkills;
+
+    @ElementCollection
+    private Set<String> requiredSkills;
 
     @ManyToOne
     private Department department;
+
+    public ShiftTemplate() {}
+
+    public String getTemplateName() { return templateName; }
+    public LocalTime getStartTime() { return startTime; }
+    public LocalTime getEndTime() { return endTime; }
+    public Set<String> getRequiredSkills() { return requiredSkills; }
+    public Department getDepartment() { return department; }
+
+    public void setTemplateName(String templateName) { this.templateName = templateName; }
+    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+    public void setRequiredSkills(Set<String> requiredSkills) { this.requiredSkills = requiredSkills; }
+    public void setDepartment(Department department) { this.department = department; }
 }
