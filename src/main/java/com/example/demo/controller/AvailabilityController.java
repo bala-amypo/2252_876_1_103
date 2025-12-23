@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/availability")
 @Tag(name = "Employee Availability Endpoints")
-public class EmployeeAvailabilityController {
+public class Availabilitycontroller {
 
     @PostMapping
     public String addAvailability() {
