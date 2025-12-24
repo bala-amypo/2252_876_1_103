@@ -4,84 +4,48 @@ import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
-@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
-    
-    private final EmployeeRepository employeeRepository;
 
-    //Constructor
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) 
-    {
-        this.employeeRepository = employeeRepository;
-    }
+    private final EmployeeRepository repository;
 
-    //Methods
-    @Override
-    public Employee createEmployee(Employee employee) 
-    {
-        if (employeeRepository.existsByEmail(employee.getEmail())) 
-        {
-            throw new IllegalArgumentException("Email already exists");
-        }
-        if (employee.getMaxWeeklyHours() == null || employee.getMaxWeeklyHours() <= 0) 
-        {
-            throw new IllegalArgumentException("Max weekly hours must be greater than 0");
-        }
-        if (employee.getRole() == null) 
-        {
-            employee.setRole(Employee.Role.STAFF);
-        }
-        return employeeRepository.save(employee);
+    public EmployeeServiceImpl(EmployeeRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public Employee getEmployee(Long id) 
-    {
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    public Employee createEmployee(Employee employee) {
+        return repository.save(employee);
     }
 
     @Override
-    public Employee updateEmployee(Long id, Employee employee) 
-    {
+    public List<Employee> getAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Employee getEmployee(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Employee updateEmployee(Long id, Employee employee) {
         Employee existing = getEmployee(id);
-        if (!existing.getEmail().equals(employee.getEmail()) && 
-            employeeRepository.existsByEmail(employee.getEmail())) 
-        {
-            throw new IllegalArgumentException("Email already exists");
-        }
+
         existing.setFullName(employee.getFullName());
         existing.setEmail(employee.getEmail());
-        existing.setRole(employee.getRole());
         existing.setSkills(employee.getSkills());
         existing.setMaxWeeklyHours(employee.getMaxWeeklyHours());
-        return employeeRepository.save(existing);
+        existing.setRole(employee.getRole());
+
+        return repository.save(existing);
     }
 
     @Override
-    public void deleteEmployee(Long id) 
-    {
-        if (!employeeRepository.existsById(id)) 
-        {
-            throw new RuntimeException("Employee not found");
-        }
-        employeeRepository.deleteById(id);
-    }
-
-    @Override
-    public List<Employee> getAll() 
-    {
-        return employeeRepository.findAll();
-    }
-
-    @Override
-    public Employee findByEmail(String email) 
-    {
-        return employeeRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    public void deleteEmployee(Long id) {
+        repository.deleteById(id);
     }
 }
