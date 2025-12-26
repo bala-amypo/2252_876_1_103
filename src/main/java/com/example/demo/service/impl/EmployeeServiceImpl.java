@@ -10,32 +10,28 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository repo;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeServiceImpl(EmployeeRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public Employee createEmployee(Employee employee) {
-        if (employee.getMaxWeeklyHours() <= 0) {
-            throw new RuntimeException("Hours must be positive");
+        if (employee.getMaxWeeklyHours() == null || employee.getMaxWeeklyHours() <= 0) {
+            throw new RuntimeException("Invalid weekly hours");
         }
 
         if (employee.getRole() == null) {
             employee.setRole("STAFF");
         }
 
-        if (employeeRepository.existsByEmail(employee.getEmail())) {
-            throw new RuntimeException("Employee already exists");
-        }
-
-        return employeeRepository.save(employee);
+        return repo.save(employee);
     }
 
     @Override
     public Employee getEmployee(Long id) {
-        return employeeRepository.findById(id)
+        return repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
@@ -43,34 +39,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee updateEmployee(Long id, Employee updated) {
         Employee existing = getEmployee(id);
 
-        if (!existing.getEmail().equals(updated.getEmail())
-                && employeeRepository.existsByEmail(updated.getEmail())) {
-            throw new RuntimeException("Email already exists");
-        }
-
-        existing.setFullName(updated.getFullName());
+        existing.setName(updated.getName());
         existing.setEmail(updated.getEmail());
         existing.setRole(updated.getRole());
-        existing.setSkills(updated.getSkillsRaw());
+        existing.setSkills(updated.getSkills());
         existing.setMaxWeeklyHours(updated.getMaxWeeklyHours());
 
-        return employeeRepository.save(existing);
+        return repo.save(existing);
     }
 
     @Override
     public void deleteEmployee(Long id) {
-        Employee e = getEmployee(id);
-        employeeRepository.delete(e);
+        repo.deleteById(id);
     }
 
     @Override
     public List<Employee> getAll() {
-        return employeeRepository.findAll();
+        return repo.findAll();
     }
 
     @Override
     public Employee findByEmail(String email) {
-        return employeeRepository.findByEmail(email)
+        return repo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 }
