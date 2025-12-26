@@ -1,3 +1,4 @@
+
 package com.example.demo.model;
 
 import jakarta.persistence.*;
@@ -10,31 +11,13 @@ public class GeneratedShiftSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate date;
+    private LocalDate shiftDate;
 
-    private String employeeName;
-
-    public Long getId() {
-        return id;
+    public void setShiftDate(LocalDate shiftDate) {
+        this.shiftDate = shiftDate;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
+    public LocalDate getShiftDate() {
+        return shiftDate;
     }
 }
