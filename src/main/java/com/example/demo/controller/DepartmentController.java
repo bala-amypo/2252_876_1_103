@@ -2,39 +2,43 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Department;
 import com.example.demo.service.DepartmentService;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
+@RestController
+@RequestMapping("/departments")
 public class DepartmentController {
+
     private final DepartmentService departmentService;
 
     public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
     }
 
-    public ResponseEntity<List<Department>> list() {
-        return new ResponseEntity<>(departmentService.getAll());
+    @PostMapping
+    public Department create(@RequestBody Department department) {
+        return departmentService.saveDepartment(department);
     }
 
-    public ResponseEntity<Department> get(Long id) {
-        return new ResponseEntity<>(departmentService.get(id));
+    @GetMapping("/{id}")
+    public Department get(@PathVariable Long id) {
+        return departmentService.getDepartmentById(id);
     }
 
-    public ResponseEntity<Department> create(Department department) {
-        return new ResponseEntity<>(departmentService.create(department));
+    @GetMapping
+    public List<Department> getAll() {
+        return departmentService.getAllDepartments();
     }
 
-    public ResponseEntity<Department> update(Long id, Department department) {
-        return new ResponseEntity<>(departmentService.update(id, department));
+    @PutMapping("/{id}")
+    public Department update(@PathVariable Long id,
+                             @RequestBody Department department) {
+        return departmentService.updateDepartment(id, department);
     }
 
-    public ResponseEntity<String> delete(Long id) {
-        departmentService.delete(id);
-        return new ResponseEntity<>("Deleted");
-    }
-
-    public static class ResponseEntity<T> {
-        private final T body;
-        public ResponseEntity(T body) { this.body = body; }
-        public T getBody() { return body; }
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        departmentService.deleteDepartment(id);
     }
 }

@@ -1,13 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Department;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DepartmentRepository {
-    Department save(Department department);
-    Optional<Department> findById(Long id);
-    List<Department> findAll();
-    void delete(Department department);
-    boolean existsByName(String name);
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
 }
