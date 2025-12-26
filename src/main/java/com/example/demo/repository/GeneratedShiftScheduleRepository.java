@@ -1,50 +1,12 @@
-package com.example.demo.model;
+package com.example.demo.repository;
 
-import jakarta.persistence.*;
+import com.example.demo.model.GeneratedShiftSchedule;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
+import java.util.List;
 
-@Entity
-public class GeneratedShiftSchedule {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    private Employee employee;
-
-    @ManyToOne
-    private ShiftTemplate shiftTemplate;
-
-    private LocalDate shiftDate;
-
-    // ===== GETTERS & SETTERS =====
-
-    public Long getId() {
-        return id;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public ShiftTemplate getShiftTemplate() {
-        return shiftTemplate;
-    }
-
-    public void setShiftTemplate(ShiftTemplate shiftTemplate) {
-        this.shiftTemplate = shiftTemplate;
-    }
-
-    public LocalDate getShiftDate() {
-        return shiftDate;
-    }
-
-    public void setShiftDate(LocalDate shiftDate) {
-        this.shiftDate = shiftDate;
-    }
+@Repository
+public interface GeneratedShiftScheduleRepository extends JpaRepository<GeneratedShiftSchedule, Long> {
+    List<GeneratedShiftSchedule> findByShiftDate(LocalDate date);
 }

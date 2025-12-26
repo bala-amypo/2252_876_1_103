@@ -4,7 +4,6 @@ import com.example.demo.model.Department;
 import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.service.DepartmentService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -17,28 +16,28 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department saveDepartment(Department department) {
+    public Department create(Department department) {
+        if (departmentRepository.existsByName(department.getName())) {
+            throw new RuntimeException("Department name already exists");
+        }
         return departmentRepository.save(department);
     }
 
     @Override
-    public Department getDepartmentById(Long id) {
-        return departmentRepository.findById(id).orElse(null);
+    public Department get(Long id) {
+        return departmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Department not found"));
     }
 
     @Override
-    public List<Department> getAllDepartments() {
+    public void delete(Long id) {
+        Department department = departmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+        departmentRepository.delete(department);
+    }
+
+    @Override
+    public List<Department> getAll() {
         return departmentRepository.findAll();
-    }
-
-    @Override
-    public Department updateDepartment(Long id, Department department) {
-        department.setId(id);
-        return departmentRepository.save(department);
-    }
-
-    @Override
-    public void deleteDepartment(Long id) {
-        departmentRepository.deleteById(id);
     }
 }
