@@ -6,7 +6,6 @@ import com.example.demo.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -18,34 +17,60 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee saveEmployee(Employee employee) {
+    public Employee createEmployee(Employee employee) {
+        if (employee.getMaxWeeklyHours() <= 0) {
+            throw new RuntimeException("Hours must be positive");
+        }
+
+        if (employee.getRole() == null) {
+            employee.setRole("STAFF");
+        }
+
+        if (employeeRepository.existsByEmail(employee.getEmail())) {
+            throw new RuntimeException("Employee already exists");
+        }
+
         return employeeRepository.save(employee);
     }
 
     @Override
-    public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElse(null);
+    public Employee getEmployee(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
-    }
+    public Employee updateEmployee(Long id, Employee updated) {
+        Employee existing = getEmployee(id);
 
-    @Override
-    public Employee updateEmployee(Long id, Employee employee) {
-        employee.setId(id);
-        return employeeRepository.save(employee);
+        if (!existing.getEmail().equals(updated.getEmail())
+                && employeeRepository.existsByEmail(updated.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        existing.setFullName(updated.getFullName());
+        existing.setEmail(updated.getEmail());
+        existing.setRole(updated.getRole());
+        existing.setSkills(updated.getSkillsRaw());
+        existing.setMaxWeeklyHours(updated.getMaxWeeklyHours());
+
+        return employeeRepository.save(existing);
     }
 
     @Override
     public void deleteEmployee(Long id) {
-        employeeRepository.deleteById(id);
+        Employee e = getEmployee(id);
+        employeeRepository.delete(e);
     }
 
-    // ✅ REQUIRED BY TESTS
     @Override
-    public Optional<Employee> findByEmail(String email) {
-        return employeeRepository.findByEmail(email);
+    public List<Employee> getAll() {
+        return employeeRepository.findAll();
+    }
+
+    @Override
+    public Employee findByEmail(String email) {
+        return employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 }

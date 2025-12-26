@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,41 +11,30 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final EmployeeService employeeService;
+    private final EmployeeService service;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
-
-    @PostMapping
-    public Employee save(@RequestBody Employee employee) {
-        return employeeService.saveEmployee(employee);
-    }
-
-    @GetMapping("/{id}")
-    public Employee getById(@PathVariable Long id) {
-        return employeeService.getEmployeeById(id);
+    public EmployeeController(EmployeeService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Employee> getAll() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<Employee>> list() {
+        return ResponseEntity.ok(service.getAll());
     }
 
-    //  REQUIRED BY TESTS
-    @GetMapping("/list")
-    public List<Employee> list() {
-        return employeeService.getAllEmployees();
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> get(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getEmployee(id));
     }
 
-    @PutMapping("/{id}")
-    public Employee update(@PathVariable Long id,
-                           @RequestBody Employee employee) {
-        return employeeService.updateEmployee(id, employee);
+    @PostMapping
+    public ResponseEntity<Employee> create(@RequestBody Employee e) {
+        return ResponseEntity.ok(service.createEmployee(e));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        employeeService.deleteEmployee(id);
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        service.deleteEmployee(id);
+        return ResponseEntity.ok("Deleted");
     }
 }

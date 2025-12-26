@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Department;
 import com.example.demo.service.DepartmentService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,35 +11,30 @@ import java.util.List;
 @RequestMapping("/departments")
 public class DepartmentController {
 
-    private final DepartmentService departmentService;
+    private final DepartmentService service;
 
-    public DepartmentController(DepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
-
-    @PostMapping
-    public Department create(@RequestBody Department department) {
-        return departmentService.saveDepartment(department);
-    }
-
-    @GetMapping("/{id}")
-    public Department get(@PathVariable Long id) {
-        return departmentService.getDepartmentById(id);
+    public DepartmentController(DepartmentService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Department> getAll() {
-        return departmentService.getAllDepartments();
+    public ResponseEntity<List<Department>> list() {
+        return ResponseEntity.ok(service.getAll());
     }
 
-    @PutMapping("/{id}")
-    public Department update(@PathVariable Long id,
-                             @RequestBody Department department) {
-        return departmentService.updateDepartment(id, department);
+    @GetMapping("/{id}")
+    public ResponseEntity<Department> get(@PathVariable Long id) {
+        return ResponseEntity.ok(service.get(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Department> create(@RequestBody Department d) {
+        return ResponseEntity.ok(service.create(d));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        departmentService.deleteDepartment(id);
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.ok("Deleted");
     }
 }
