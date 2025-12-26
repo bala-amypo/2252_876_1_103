@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Employee {
@@ -11,6 +12,10 @@ public class Employee {
 
     private String fullName;
 
+    @ElementCollection
+    private List<String> skills;
+
+    // ===== GETTERS =====
     public Long getId() {
         return id;
     }
@@ -19,11 +24,20 @@ public class Employee {
         return fullName;
     }
 
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    // ===== SETTERS =====
     public void setId(Long id) {
         this.id = id;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
     }
 }
