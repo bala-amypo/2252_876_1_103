@@ -3,10 +3,15 @@ package com.example.demo.controller;
 import com.example.demo.model.EmployeeAvailability;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.AvailabilityService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@RestController
+@RequestMapping("/api/availability")
 public class AvailabilityController {
+
     private final AvailabilityService availabilityService;
     private final EmployeeRepository employeeRepository;
 
@@ -16,35 +21,26 @@ public class AvailabilityController {
         this.employeeRepository = employeeRepository;
     }
 
-    public ResponseEntity<List<EmployeeAvailability>> list() {
-        return new ResponseEntity<>(availabilityService.getAll());
+    @PostMapping
+    public ResponseEntity<EmployeeAvailability> create(@RequestBody EmployeeAvailability availability) {
+        return ResponseEntity.ok(availabilityService.create(availability));
     }
 
-    public ResponseEntity<List<EmployeeAvailability>> byDate(String dateStr) {
-        LocalDate date = LocalDate.parse(dateStr);
-        return new ResponseEntity<>(availabilityService.getByDate(date));
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeAvailability> update(@PathVariable Long id, 
+                                                       @RequestBody EmployeeAvailability availability) {
+        return ResponseEntity.ok(availabilityService.update(id, availability));
     }
 
-    public ResponseEntity<EmployeeAvailability> get(Long id) {
-        return new ResponseEntity<>(availabilityService.get(id));
-    }
-
-    public ResponseEntity<EmployeeAvailability> create(EmployeeAvailability availability) {
-        return new ResponseEntity<>(availabilityService.create(availability));
-    }
-
-    public ResponseEntity<EmployeeAvailability> update(Long id, EmployeeAvailability availability) {
-        return new ResponseEntity<>(availabilityService.update(id, availability));
-    }
-
-    public ResponseEntity<String> delete(Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         availabilityService.delete(id);
-        return new ResponseEntity<>("Deleted");
+        return ResponseEntity.ok("Deleted");
     }
 
-    public static class ResponseEntity<T> {
-        private final T body;
-        public ResponseEntity(T body) { this.body = body; }
-        public T getBody() { return body; }
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<EmployeeAvailability>> byDate(@PathVariable String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return ResponseEntity.ok(availabilityService.getByDate(localDate));
     }
 }

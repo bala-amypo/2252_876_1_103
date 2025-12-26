@@ -4,37 +4,36 @@ import com.example.demo.model.Department;
 import com.example.demo.service.DepartmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/departments")
+@RequestMapping("/api/departments")
 public class DepartmentController {
 
-    private final DepartmentService service;
+    private final DepartmentService departmentService;
 
-    public DepartmentController(DepartmentService service) {
-        this.service = service;
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Department>> list() {
-        return ResponseEntity.ok(service.getAll());
+    @PostMapping
+    public ResponseEntity<Department> create(@RequestBody Department department) {
+        return ResponseEntity.ok(departmentService.create(department));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Department> get(@PathVariable Long id) {
-        return ResponseEntity.ok(service.get(id));
+        return ResponseEntity.ok(departmentService.get(id));
     }
 
-    @PostMapping
-    public ResponseEntity<Department> create(@RequestBody Department d) {
-        return ResponseEntity.ok(service.create(d));
+    @GetMapping
+    public ResponseEntity<List<Department>> list() {
+        return ResponseEntity.ok(departmentService.getAll());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        service.delete(id);
+        departmentService.delete(id);
         return ResponseEntity.ok("Deleted");
     }
 }
