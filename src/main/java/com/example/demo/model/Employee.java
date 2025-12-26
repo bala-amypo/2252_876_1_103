@@ -15,7 +15,6 @@ public class Employee {
     @ElementCollection
     private List<String> skills;
 
-    // ===== GETTERS =====
     public Long getId() {
         return id;
     }
@@ -28,7 +27,6 @@ public class Employee {
         return skills;
     }
 
-    // ===== SETTERS =====
     public void setId(Long id) {
         this.id = id;
     }
