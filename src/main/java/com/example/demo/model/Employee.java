@@ -1,42 +1,73 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
 public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
+
+    private String name;
+
     private String email;
+
+    private Integer maxWeeklyHours;
+
     private String role;
+
+    @ElementCollection
     private List<String> skills;
 
-    public Employee() {
+    // ===== GETTERS & SETTERS =====
+
+    public Long getId() {
+        return id;
     }
 
-    public Employee(String firstName, String lastName, String email, String role, int dummy) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getMaxWeeklyHours() {
+        return maxWeeklyHours;
+    }
+
+    public void setMaxWeeklyHours(Integer maxWeeklyHours) {
+        this.maxWeeklyHours = maxWeeklyHours;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
         this.role = role;
     }
 
-    // ✅ REQUIRED getters/setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getEmail() { return email; }
-    public String getRole() { return role; }
-
-    public List<String> getSkills() { return skills; }
-
-    public void setFullName(String name) {
-        String[] p = name.split(" ");
-        this.firstName = p[0];
-        this.lastName = p.length > 1 ? p[1] : "";
+    public List<String> getSkills() {
+        return skills;
     }
 
-    public String getFullName() {
-        return firstName + " " + lastName;
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
