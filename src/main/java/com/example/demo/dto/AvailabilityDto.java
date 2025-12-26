@@ -6,17 +6,9 @@ public class AvailabilityDto {
 
     private Long employeeId;
     private LocalDate availableDate;
-    private boolean available;
+    private Boolean available;
 
-    // No-args constructor
     public AvailabilityDto() {
-    }
-
-    // All-args constructor
-    public AvailabilityDto(Long employeeId, LocalDate availableDate, boolean available) {
-        this.employeeId = employeeId;
-        this.availableDate = availableDate;
-        this.available = available;
     }
 
     public Long getEmployeeId() {
@@ -35,11 +27,11 @@ public class AvailabilityDto {
         this.availableDate = availableDate;
     }
 
-    public boolean isAvailable() {
+    public Boolean getAvailable() {
         return available;
     }
 
-    public void setAvailable(boolean available) {
+    public void setAvailable(Boolean available) {
         this.available = available;
     }
 }
