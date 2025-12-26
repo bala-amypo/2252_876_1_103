@@ -1,50 +1,33 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
-import java.util.Set;
-
-@Entity
 public class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String fullName;
     private String email;
-    private int maxWeeklyHours;
-
-    @ElementCollection
-    private Set<String> skills;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    public enum Role {
-        ADMIN, STAFF
-    }
+    private String role;
+    private String skills;
+    private Integer maxHoursPerWeek;
 
     public Employee() {}
 
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public int getMaxWeeklyHours() { return maxWeeklyHours; }
-    public void setMaxWeeklyHours(int maxWeeklyHours) {
-        this.maxWeeklyHours = maxWeeklyHours;
+    public Employee(String fullName, String email, String role, String skills, Integer maxHoursPerWeek) {
+        this.fullName = fullName;
+        this.email = email;
+        this.role = role == null ? "STAFF" : role;
+        this.skills = skills;
+        this.maxHoursPerWeek = maxHoursPerWeek;
     }
 
-    public Set<String> getSkills() { return skills; }
-    public Set<String> getSkillsSet() { return skills; }
-    public void setSkills(Set<String> skills) { this.skills = skills; }
-
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+    public String getSkills() { return skills; }
+    public void setSkills(String skills) { this.skills = skills; }
+    public Integer getMaxHoursPerWeek() { return maxHoursPerWeek; }
+    public void setMaxHoursPerWeek(Integer maxHoursPerWeek) { this.maxHoursPerWeek = maxHoursPerWeek; }
 }
