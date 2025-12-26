@@ -18,15 +18,17 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @PostMapping("/generate/{date}")
+    @GetMapping("/generate/{date}")
     public ResponseEntity<List<GeneratedShiftSchedule>> generate(@PathVariable String date) {
-        LocalDate d = LocalDate.parse(date);
-        return ResponseEntity.ok(scheduleService.generateForDate(d));
+        return ResponseEntity.ok(
+                scheduleService.generateForDate(LocalDate.parse(date))
+        );
     }
 
     @GetMapping("/{date}")
     public ResponseEntity<List<GeneratedShiftSchedule>> byDate(@PathVariable String date) {
-        LocalDate d = LocalDate.parse(date);
-        return ResponseEntity.ok(scheduleService.getByDate(d));
+        return ResponseEntity.ok(
+                scheduleService.getByDate(LocalDate.parse(date))
+        );
     }
 }
