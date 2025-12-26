@@ -2,32 +2,39 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@RestController
-@RequestMapping("/employees")
 public class EmployeeController {
-
     private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
-    @PostMapping
-    public Employee create(@RequestBody Employee employee) {
-        return employeeService.createEmployee(employee);
+    public ResponseEntity<List<Employee>> list() {
+        return new ResponseEntity<>(employeeService.getAll());
     }
 
-    @GetMapping
-    public List<Employee> getAll() {
-        return employeeService.getAll();
+    public ResponseEntity<Employee> get(Long id) {
+        return new ResponseEntity<>(employeeService.getEmployee(id));
     }
 
-    @GetMapping("/{id}")
-    public Employee get(@PathVariable Long id) {
-        return employeeService.getEmployee(id);
+    public ResponseEntity<Employee> create(Employee employee) {
+        return new ResponseEntity<>(employeeService.createEmployee(employee));
+    }
+
+    public ResponseEntity<Employee> update(Long id, Employee employee) {
+        return new ResponseEntity<>(employeeService.updateEmployee(id, employee));
+    }
+
+    public ResponseEntity<String> delete(Long id) {
+        employeeService.deleteEmployee(id);
+        return new ResponseEntity<>("Deleted");
+    }
+
+    public static class ResponseEntity<T> {
+        private final T body;
+        public ResponseEntity(T body) { this.body = body; }
+        public T getBody() { return body; }
     }
 }

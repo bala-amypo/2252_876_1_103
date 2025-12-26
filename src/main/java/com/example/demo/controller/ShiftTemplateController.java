@@ -1,46 +1,44 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.ShiftTemplate;
+import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.service.ShiftTemplateService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/templates")
-@Tag(name = "Shift Templates", description = "Shift Templates Endpoints")
 public class ShiftTemplateController {
-    
     private final ShiftTemplateService shiftTemplateService;
+    private final DepartmentRepository departmentRepository;
 
-    public ShiftTemplateController(ShiftTemplateService shiftTemplateService) {
+    public ShiftTemplateController(ShiftTemplateService shiftTemplateService, 
+                                  DepartmentRepository departmentRepository) {
         this.shiftTemplateService = shiftTemplateService;
+        this.departmentRepository = departmentRepository;
     }
 
-    @PostMapping("/department/{departmentId}")
-    @Operation(summary = "Create shift template for department")
-    public ResponseEntity<ShiftTemplate> create(@PathVariable Long departmentId, @RequestBody ShiftTemplate template) {
-        return ResponseEntity.ok(shiftTemplateService.create(template));
+    public ResponseEntity<List<ShiftTemplate>> list() {
+        return new ResponseEntity<>(shiftTemplateService.getAll());
     }
 
-    @GetMapping
-    @Operation(summary = "Get all templates")
-    public ResponseEntity<List<ShiftTemplate>> getAll() {
-        return ResponseEntity.ok(shiftTemplateService.getAll());
+    public ResponseEntity<ShiftTemplate> get(Long id) {
+        return new ResponseEntity<>(shiftTemplateService.get(id));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get template by ID")
-    public ResponseEntity<ShiftTemplate> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(shiftTemplateService.getById(id));
+    public ResponseEntity<ShiftTemplate> create(ShiftTemplate shiftTemplate) {
+        return new ResponseEntity<>(shiftTemplateService.create(shiftTemplate));
     }
 
-    @GetMapping("/department/{departmentId}")
-    @Operation(summary = "Get templates by department")
-    public ResponseEntity<List<ShiftTemplate>> getByDepartment(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(shiftTemplateService.getByDepartment(departmentId));
+    public ResponseEntity<ShiftTemplate> update(Long id, ShiftTemplate shiftTemplate) {
+        return new ResponseEntity<>(shiftTemplateService.update(id, shiftTemplate));
+    }
+
+    public ResponseEntity<String> delete(Long id) {
+        shiftTemplateService.delete(id);
+        return new ResponseEntity<>("Deleted");
+    }
+
+    public static class ResponseEntity<T> {
+        private final T body;
+        public ResponseEntity(T body) { this.body = body; }
+        public T getBody() { return body; }
     }
 }

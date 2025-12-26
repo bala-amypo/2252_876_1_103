@@ -2,46 +2,39 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Department;
 import com.example.demo.service.DepartmentService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/departments")
-@Tag(name = "Departments", description = "Departments Endpoints")
 public class DepartmentController {
-    
     private final DepartmentService departmentService;
 
     public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
     }
 
-    @PostMapping
-    @Operation(summary = "Create department")
-    public ResponseEntity<Department> create(@RequestBody Department department) {
-        return ResponseEntity.ok(departmentService.create(department));
+    public ResponseEntity<List<Department>> list() {
+        return new ResponseEntity<>(departmentService.getAll());
     }
 
-    @GetMapping
-    @Operation(summary = "Get all departments")
-    public ResponseEntity<List<Department>> getAll() {
-        return ResponseEntity.ok(departmentService.getAll());
+    public ResponseEntity<Department> get(Long id) {
+        return new ResponseEntity<>(departmentService.get(id));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get department by ID")
-    public ResponseEntity<Department> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(departmentService.get(id));
+    public ResponseEntity<Department> create(Department department) {
+        return new ResponseEntity<>(departmentService.create(department));
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete department")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<Department> update(Long id, Department department) {
+        return new ResponseEntity<>(departmentService.update(id, department));
+    }
+
+    public ResponseEntity<String> delete(Long id) {
         departmentService.delete(id);
-        return ResponseEntity.ok("Deleted");
+        return new ResponseEntity<>("Deleted");
+    }
+
+    public static class ResponseEntity<T> {
+        private final T body;
+        public ResponseEntity(T body) { this.body = body; }
+        public T getBody() { return body; }
     }
 }
