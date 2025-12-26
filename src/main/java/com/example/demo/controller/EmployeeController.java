@@ -31,7 +31,7 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
-    // ✅ REQUIRED BY TESTS
+    //  REQUIRED BY TESTS
     @GetMapping("/list")
     public List<Employee> list() {
         return employeeService.getAllEmployees();
