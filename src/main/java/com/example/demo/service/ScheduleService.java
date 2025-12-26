@@ -1,17 +1,13 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Employee;
+import com.example.demo.model.GeneratedShiftSchedule;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface ScheduleService {
 
-    // existing method
-    List<Employee> scheduleEmployees(List<Employee> employees, String requiredSkill);
+    List<GeneratedShiftSchedule> generateForDate(LocalDate date);
 
-    // ✅ REQUIRED by controller
-    void generateForDate(LocalDate date);
-
-    List<Employee> getByDate(LocalDate date);
+    List<GeneratedShiftSchedule> getByDate(LocalDate date);
 }
