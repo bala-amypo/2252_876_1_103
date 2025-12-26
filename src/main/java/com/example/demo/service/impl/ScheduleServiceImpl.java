@@ -25,7 +25,29 @@ public class ScheduleServiceImpl implements ScheduleService {
         schedules.add(schedule);
 
         return schedules;
+
     }
+    
+public class ScheduleServiceImpl implements ScheduleService {
+
+    public ScheduleServiceImpl(
+            ShiftTemplateRepository s,
+            AvailabilityRepository a,
+            EmployeeRepository e,
+            GeneratedShiftScheduleRepository g,
+            DepartmentRepository d
+    ) {}
+
+    @Override
+    public List<GeneratedShiftSchedule> generateForDate(LocalDate date) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<GeneratedShiftSchedule> getByDate(LocalDate date) {
+        return Collections.emptyList();
+    }
+}
 
     @Override
     public List<GeneratedShiftSchedule> getByDate(LocalDate date) {

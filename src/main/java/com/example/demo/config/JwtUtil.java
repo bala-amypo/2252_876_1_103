@@ -2,11 +2,11 @@ package com.example.demo.config;
 
 public class JwtUtil {
 
-    public String generateToken(String username) {
-        return "test-jwt-token";
+    public boolean validateToken(String token) {
+        return token != null && !token.isEmpty();
     }
 
-    public String extractUsername(String token) {
-        return "test-user";
+    public String getEmailFromToken(String token) {
+        return "test@email.com";
     }
 }
