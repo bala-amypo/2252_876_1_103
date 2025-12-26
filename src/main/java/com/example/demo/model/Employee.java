@@ -1,24 +1,42 @@
-private Long id;
-private String firstName;
-private String lastName;
-private String email;
-private String role;
-private List<String> skills;
+package com.example.demo.model;
 
-public Long getId() { return id; }
-public void setId(Long id) { this.id = id; }
+import java.util.List;
 
-public String getEmail() { return email; }
-public String getRole() { return role; }
+public class Employee {
 
-public List<String> getSkills() { return skills; }
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String role;
+    private List<String> skills;
 
-public void setFullName(String name) {
-    String[] parts = name.split(" ");
-    this.firstName = parts[0];
-    this.lastName = parts.length > 1 ? parts[1] : "";
-}
+    public Employee() {
+    }
 
-public String getFullName() {
-    return firstName + " " + lastName;
+    public Employee(String firstName, String lastName, String email, String role, int dummy) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+    }
+
+    // ✅ REQUIRED getters/setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getEmail() { return email; }
+    public String getRole() { return role; }
+
+    public List<String> getSkills() { return skills; }
+
+    public void setFullName(String name) {
+        String[] p = name.split(" ");
+        this.firstName = p[0];
+        this.lastName = p.length > 1 ? p[1] : "";
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }
