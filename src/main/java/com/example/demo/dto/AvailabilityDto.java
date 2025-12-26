@@ -4,12 +4,27 @@ import java.time.LocalDate;
 
 public class AvailabilityDto {
 
+    private Long employeeId;
     private LocalDate availableDate;
+    private boolean available;
 
-    public AvailabilityDto() {}
+    // No-args constructor
+    public AvailabilityDto() {
+    }
 
-    public AvailabilityDto(LocalDate availableDate) {
+    // All-args constructor
+    public AvailabilityDto(Long employeeId, LocalDate availableDate, boolean available) {
+        this.employeeId = employeeId;
         this.availableDate = availableDate;
+        this.available = available;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public LocalDate getAvailableDate() {
@@ -19,14 +34,12 @@ public class AvailabilityDto {
     public void setAvailableDate(LocalDate availableDate) {
         this.availableDate = availableDate;
     }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
 }
-package com.example.demo.service.impl;
-
-import com.example.demo.model.GeneratedShiftSchedule;
-import com.example.demo.repository.*;
-import com.example.demo.service.ScheduleService;
-
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-
