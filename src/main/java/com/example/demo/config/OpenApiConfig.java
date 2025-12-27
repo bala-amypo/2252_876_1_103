@@ -22,7 +22,7 @@ public class OpenApiConfig {
                         .version("1.0")
                         .description("ManiKandan"))
                 // Add this line to set the server and port
-                .servers(List.of(new Server().url("https://9267.pro604cr.amypo.ai").description("Local Development Server")))
+                .servers(List.of(new Server().url("https://9142.32procr.amypo.ai").description("Local Development Server")))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components()
                         .addSecuritySchemes("Bearer Authentication",
